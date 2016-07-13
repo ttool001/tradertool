@@ -1,0 +1,5 @@
+# tradertool
+
+pubkey for openshift
+
+ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAjvTL+SKRXHSqwEaTTIoxXu9SkxTwcFVxU9mnftE1d4QQpPqvJvaKHdvFRguNWmpsctL/tKX8nzALosp/+OYHuGkL29fGrGkPmoMYRhHnkqn7NKmfC0L86pcEZGTMQGL+wdtGTXUAGCNSCoWf42nPB5rm6xYTI18YAiakGG2YkRs= rsa-key-20160713
