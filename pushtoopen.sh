@@ -1,2 +1,2 @@
-git pull -s recursive -X theirs git@gitlab.com:yncconsultinginc/python3.git
+git pull -s recursive -X theirs https://github.com/ttool001/tradertool.git
 git push
