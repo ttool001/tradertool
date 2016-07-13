@@ -1,0 +1,27 @@
+private key for openshift------start
+PuTTY-User-Key-File-2: ssh-rsa
+Encryption: none
+Comment: rsa-key-20160713
+Public-Lines: 4
+AAAAB3NzaC1yc2EAAAABJQAAAIEAjvTL+SKRXHSqwEaTTIoxXu9SkxTwcFVxU9mn
+ftE1d4QQpPqvJvaKHdvFRguNWmpsctL/tKX8nzALosp/+OYHuGkL29fGrGkPmoMY
+RhHnkqn7NKmfC0L86pcEZGTMQGL+wdtGTXUAGCNSCoWf42nPB5rm6xYTI18YAiak
+GG2YkRs=
+Private-Lines: 8
+AAAAgEWL2NoQ0Rg4wcVSxDMSy+j+zjm3KNyz8fFwzgZX8H9VAS2qYwwJPEXgiXwF
+nrZdSYP38gTbIPN/KEFbmDPlhzZkLHfmCTSP7PY193CTpGVkwb5JsmAqG0JVOwxy
+Dty7gDbO9DYKwlXJ0W+u2m8ABf1vfG5T7Of9wDi8xtoMHTM9AAAAQQDDV0+lVEIK
+ef+W3waMcfy1SwMlJ8olS+4s9yxleRtOKIk3eGV7J5+blCgVHWiGMBrgaEOzrhDk
+uNa0Fse9ewE9AAAAQQC7WSP2Cij92S8Lg7urTlPCBX+0FtDHI5662vO/ie2Tax1P
+u3jjusgwASeJFs+cdirjjRnuxTWbcH3ugsleU1E3AAAAQGrgk9Yt/QzjWOPhlou6
+bXIJ3MyvKoF1MIHhyPhc4etuPzEmPPNn7+eaBhy0j5Bz6oIGBSXEufWxWDQZkWyT
+zTQ=
+Private-MAC: 3fbc39a09f43850df81ebcf9538d8c55845db629
+private key for openshift------end
+
+
+pub key ----------------------start
+
+ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAjvTL+SKRXHSqwEaTTIoxXu9SkxTwcFVxU9mnftE1d4QQpPqvJvaKHdvFRguNWmpsctL/tKX8nzALosp/+OYHuGkL29fGrGkPmoMYRhHnkqn7NKmfC0L86pcEZGTMQGL+wdtGTXUAGCNSCoWf42nPB5rm6xYTI18YAiakGG2YkRs= rsa-key-20160713
+
+pub key ----------------------end
