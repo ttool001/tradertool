@@ -5,7 +5,6 @@ import datetime
 from time import mktime
 from flask import Flask, request, flash, url_for, redirect, Response, \
      render_template, abort, send_from_directory
-from mongodao import Mongodao
 import time
 
 from flask_cache import Cache
