@@ -17,6 +17,7 @@ CONSUMER_SECRET = "LoxYBF96ISbS4TjofORK7lLFMbhegWbPAEmplHix2UZJl8m9aE"
 OAUTH_TOKEN = "722527962743062529-LP1X9LMlTZD7FgoCPO04Lv0GfHET1sh"
 OAUTH_TOKEN_SECRET = "AHGRxJTazZ7bnWndzWSxqbqHkYxwPArQR3CWKtONAz92q"
 
+BASE_QUERY = 'https://api.twitter.com/1.1/search/tweets.json?'
 
 def get_oauth():
     oauth = OAuth1(CONSUMER_KEY,
@@ -28,35 +29,50 @@ def get_oauth():
 # with open('berniesanderstest.csv', 'w',encoding="utf8") as f:
 #     a = csv.writer(f)
 
-def getTweets():
+def getTweets(keyword='DropOutBernie', lang='en', count=200, result_type='mixed'):
+    #make sure keyword is valid
+    
+    if not keyword:
+        return 'keyword needs to be valid'
     oauth = get_oauth()
 
-    bernie_sander_tweets = requests.get(url="https://api.twitter.com/1.1/search/tweets.json?q=DropOutBernie&count=200", auth=oauth)
-
+    request_url = '%sq=%s&count=%s&lang=%s&result_type=%s' % (BASE_QUERY, keyword, count, lang, result_type)
+    print('make rest call to [%s]', request_url)
+    bernie_sander_tweets = requests.get(url=request_url, auth=oauth)
+    
+    print(bernie_sander_tweets.encoding)
+    bernie_sander_tweets.encoding = 'ISO-8859-1'
     new_json = bernie_sander_tweets.json()["statuses"]
-    tweets = []
+    tweets = set()
     for i in new_json:
         for key,value in i.items():
              if(key=='text'):
-                tweets.append(value)
+                tweets.add(value)
 
     return tweets
 
 
 if __name__ == "__main__":
 
+    for x in getTweets():
+        try:
+            print(x)
+        except UnicodeEncodeError as e:
+            print('error happened %s', e)
+    '''
     oauth = get_oauth()
     hillary_tweets = requests.get(url="https://api.twitter.com/1.1/search/tweets.json?q=HillaryClinton&count=200", auth=oauth)
     bernie_sander_tweets = requests.get(url="https://api.twitter.com/1.1/search/tweets.json?q=BernieSanders&count=200", auth=oauth)
     trump_tweets  = requests.get(url="https://api.twitter.com/1.1/search/tweets.json?q=DonaldTrump&count=200", auth=oauth)
     new_json = bernie_sander_tweets.json()["statuses"]
-    fileBernie = open('bernieSanders.txt', 'wb')
+    #fileBernie = open('bernieSanders.txt', 'wb')
     for i in new_json:
         for key,value in i.items():
             #pyexcel.save_as(array=key, dest_file_name='berniesanderstest.csv')
              if(key=='text'):
                  print (value)
-                 fileBernie.writelines(value.encode('utf-8'))
+                 #fileBernie.writelines(value.encode('utf-8'))
         #
         #             a.writerows(value)
         #print(i)
+    '''
