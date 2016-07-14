@@ -7,6 +7,7 @@ import csv
 from requests_oauthlib import OAuth1
 from mongodb.mongodao import Mongodao
 import datetime
+from urllib import request, parse, error
 
 REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token"
 AUTHORIZE_URL = "https://api.twitter.com/oauth/authorize?oauth_token="
@@ -35,7 +36,8 @@ def getTweets(keyword, mongodao, lang='en', count=200, result_type='mixed'):
     
     if not keyword:
         return 'keyword needs to be valid'
-    
+    else:
+        search_keyword = '$%s' % keyword
     twit = mongodao.get_twit_by_keyword(keyword)
     if twit:
         last_ts = twit['lastUpdate']
@@ -47,9 +49,9 @@ def getTweets(keyword, mongodao, lang='en', count=200, result_type='mixed'):
             
     oauth = get_oauth()
     
-    request_url = '%sq=%s&count=%s&lang=%s&result_type=%s' % (BASE_QUERY, keyword, count, lang, result_type)
-    print('rest call to [%s]' % request_url)
-    bernie_sander_tweets = requests.get(url=request_url, auth=oauth)
+    encoded_params = parse.urlencode({'q':search_keyword, 'count':count, 'lang':lang, 'result_type':result_type})
+    print('rest call to [%s]' % encoded_params)
+    bernie_sander_tweets = requests.get(url=BASE_QUERY, params=encoded_params,  auth=oauth)
     new_json = bernie_sander_tweets.json()["statuses"]
     twitTexts = set()
     for i in new_json:
@@ -70,7 +72,7 @@ def getTweets(keyword, mongodao, lang='en', count=200, result_type='mixed'):
 if __name__ == "__main__":
 
     mongodao = Mongodao()
-    print(getTweets('DropOutBernie', mongodao))
+    print(getTweets('APPL', mongodao))
 
     '''
     for x in getTweets('APPL', mongodao):
