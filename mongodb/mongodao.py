@@ -11,12 +11,6 @@ p = '%Y-%m-%dT%H:%M:%S.%fZ'
 class Mongodao:
     
     def __init__(self):
-        from pymongo import Connection
-        connection = Connection()
-        #create db if it doesn't exists
-        db = connection['twitsdb']
-        collection = db['twits']
-        
         from pymongo import MongoClient
         client = MongoClient('mongodb://admin:URUI3swsR-Lm@57864af57628e13523000169-jphackathon.rhcloud.com:52211/')
         #client = MongoClient('mongodb://localhost:27017/')
