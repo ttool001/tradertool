@@ -6,6 +6,7 @@ import csv
 #import pyexcel
 from requests_oauthlib import OAuth1
 from mongodb.mongodao import Mongodao
+import datetime
 
 REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token"
 AUTHORIZE_URL = "https://api.twitter.com/oauth/authorize?oauth_token="
@@ -37,27 +38,32 @@ def getTweets(keyword, mongodao, lang='en', count=200, result_type='mixed'):
     
     twit = mongodao.get_twit_by_keyword(keyword)
     if twit:
-        return twit
-    else:
-        oauth = get_oauth()
+        last_ts = twit['lastUpdate']
+        if last_ts:
+            now = datetime.datetime.now()
+            if (now - last_ts) < datetime.timedelta(minutes = 15):
+                del twit['lastUpdate']
+                return twit
+            
+    oauth = get_oauth()
     
-        request_url = '%sq=%s&count=%s&lang=%s&result_type=%s' % (BASE_QUERY, keyword, count, lang, result_type)
-        print('rest call to [%s]' % request_url)
-        bernie_sander_tweets = requests.get(url=request_url, auth=oauth)
-        new_json = bernie_sander_tweets.json()["statuses"]
-        twitTexts = set()
-        for i in new_json:
-            for key,value in i.items():
-                 if(key=='text'):
-                    try:
-                        encodedVal = str(value.encode('utf-8'))
-                        twitTexts.add(encodedVal)
-                    except (UnicodeEncodeError, UnicodeDecodeError):
-                        pass                         
+    request_url = '%sq=%s&count=%s&lang=%s&result_type=%s' % (BASE_QUERY, keyword, count, lang, result_type)
+    print('rest call to [%s]' % request_url)
+    bernie_sander_tweets = requests.get(url=request_url, auth=oauth)
+    new_json = bernie_sander_tweets.json()["statuses"]
+    twitTexts = set()
+    for i in new_json:
+        for key,value in i.items():
+            if(key=='text'):
+                try:
+                    encodedVal = str(value.encode('utf-8'))
+                    twitTexts.add(encodedVal)
+                except (UnicodeEncodeError, UnicodeDecodeError):
+                    pass                         
                     
-        twit = {'keyword':keyword, 'twit':list(twitTexts)}
-        mongodao.save_twit_by_keyword(keyword, twit)
-        return twit        
+    twit = {'keyword':keyword, 'twit':list(twitTexts)}
+    mongodao.save_twit_by_keyword(keyword, twit)
+    return twit        
 
 
 

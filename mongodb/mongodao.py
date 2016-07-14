@@ -12,8 +12,8 @@ class Mongodao:
     
     def __init__(self):
         from pymongo import MongoClient
-        client = MongoClient('mongodb://admin:URUI3swsR-Lm@57864af57628e13523000169-jphackathon.rhcloud.com:52211/')
-        #client = MongoClient('mongodb://localhost:27017/')
+        #client = MongoClient('mongodb://admin:URUI3swsR-Lm@57864af57628e13523000169-jphackathon.rhcloud.com:52211/')
+        client = MongoClient('mongodb://localhost:27017/')
         self.twits_db = client.twitsdb
     
     def get_twit_by_keyword(self, keyword):
@@ -22,7 +22,6 @@ class Mongodao:
             return {}
         else:
             del twit['_id']
-            del twit['lastUpdate']
             return twit
     
     def save_twit_by_keyword(self, keyword, twit):
