@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 #from pandas.io.data import DataReader
 from urllib import request, parse, error
-
+from mongodb.mongodao import Mongodao
 
 SITE = "http://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 #START = datetime(1900, 1, 1, 0, 0, 0, 0, pytz.utc)
@@ -55,15 +55,24 @@ def store_HDF5(sector_ohlc, path):
             store[sector] = ohlc
 
 
-def get_snp500():
-    sector_tickers = scrape_list(SITE)
+def get_snp500(db):
     
+    key = 'sp500'
+    sector_tickers = db.get_ticker_by_key(key)
+    if not sector_tickers:
+        sector_tickers = scrape_list(SITE)
+        db.save_ticker_by_key(key, sector_tickers)
+    return key, sector_tickers
+    '''
     for x in sector_tickers:
         print('%s\n' % x)
-    '''
+        print('%s\n' % sector_tickers.get(x, None))
+    
     sector_ohlc = download_ohlc(sector_tickers, START, END)
     store_HDF5(sector_ohlc, 'snp500.h5')
     '''
 
 if __name__ == '__main__':
-    get_snp500()
+    db = Mongodao()
+    key, val = get_snp500(db)
+    print(val)

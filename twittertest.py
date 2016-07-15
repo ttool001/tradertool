@@ -31,7 +31,7 @@ def get_oauth():
 # with open('berniesanderstest.csv', 'w',encoding="utf8") as f:
 #     a = csv.writer(f)
 
-def getTweets(keyword, mongodao, lang='en', count=1000, result_type='mixed'):
+def getTweets(keyword, mongodao, lang='en', count=10000, result_type='mixed'):
     #make sure keyword is valid
     
     if not keyword:
@@ -53,17 +53,20 @@ def getTweets(keyword, mongodao, lang='en', count=1000, result_type='mixed'):
     print('rest call to [%s]' % encoded_params)
     bernie_sander_tweets = requests.get(url=BASE_QUERY, params=encoded_params,  auth=oauth)
     new_json = bernie_sander_tweets.json()["statuses"]
+    #print(json.dumps(new_json, ensure_ascii=False).encode('utf8'))
     twitTexts = set()
     for i in new_json:
-        for key,value in i.items():
-            if(key=='text'):
-                try:
-                    encodedVal = str(value.encode('utf-8'))
-                    twitTexts.add(encodedVal)
-                except (UnicodeEncodeError, UnicodeDecodeError):
-                    pass                         
-                    
-    twit = {'keyword':keyword, 'twit':list(twitTexts)}
+        value = i.get('text', None)
+        tweet_created_at = i.get('created_at', None)
+        try:
+            encodedVal = value
+            #encodedVal = json.dumps(value, ensure_ascii=False).encode('utf8')
+            #encodedVal = str(value.encode('utf-8'))
+            twitTexts.add(encodedVal)
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            pass  
+        
+    twit = {'keyword':keyword, 'twit':list(twitTexts), 'tweet_created_at':tweet_created_at}
     mongodao.save_twit_by_keyword(keyword, twit)
     return twit        
 
@@ -72,7 +75,14 @@ def getTweets(keyword, mongodao, lang='en', count=1000, result_type='mixed'):
 if __name__ == "__main__":
 
     mongodao = Mongodao()
-    print(getTweets('APPL', mongodao))
+    result = getTweets('TSL', mongodao)
+    
+    for key, val in result.items():
+        if isinstance(val, list):
+            for x in val:
+                print(x.encode('utf-8'))
+        else:
+            print(val)
 
     '''
     for x in getTweets('APPL', mongodao):

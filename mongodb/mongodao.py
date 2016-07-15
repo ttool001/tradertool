@@ -15,6 +15,7 @@ class Mongodao:
         #client = MongoClient('mongodb://admin:URUI3swsR-Lm@57864af57628e13523000169-jphackathon.rhcloud.com:52211/')
         client = MongoClient('mongodb://localhost:27017/')
         self.twits_db = client.twitsdb
+        self.ticker_db = client.tickerdb
     
     def get_twit_by_keyword(self, keyword):
         twit = self.twits_db.twits.find_one({"keyword":keyword})
@@ -34,7 +35,18 @@ class Mongodao:
         del twit['_id']
         del twit['lastUpdate']
 
-        
+    def save_ticker_by_key(self, key, val):
+        tickersFromDb = self.ticker_db.tickers.find_one({"key":key})
+        if not tickersFromDb:
+            tickersFromDb = dict()
+            tickersFromDb['key'] = key
+        tickersFromDb['tickers'] = val
+        self.ticker_db.tickers.save(tickersFromDb)
+    
+    def get_ticker_by_key(self, key):
+        tickersFromDb = self.ticker_db.tickers.find_one({"key":key})
+        if tickersFromDb:
+            return tickersFromDb.get('tickers', None)
 
 if __name__ == "__main__":
 

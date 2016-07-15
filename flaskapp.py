@@ -3,9 +3,19 @@ from flask import Flask, request, flash, url_for, redirect, Response, \
      render_template, abort, send_from_directory
 from mongodb import mongodao
 from flask_cache import Cache
-
+import sys
 from flask_cors import CORS, cross_origin
 
+'''
+import logging
+from logging.handlers import RequiredHandler
+
+file_handler = RequiredHandler(...)
+file_handler.setLevel(logging.WARNING)
+
+app.logger.setLevel(logging.WARNING)
+app.logger.addHandler(file_handler)
+'''
 
 dao = mongodao.Mongodao()
 app = Flask(__name__)
@@ -68,6 +78,53 @@ def getlists():
     
     return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
                     , mimetype='application/json')
+    
+@app.route("/getticker/<keyword>")
+def getticker(keyword):
+    
+    pos_list = []
+    pos_list.append({'date':'Wed Jul 06 12:32:31 +0000 2016', 'tpc':90, 'tnc':10, 'tps':0.9, 'tns':0.1})
+    pos_list.append({'date':'Tue Jul 05 12:32:31 +0000 2016', 'tpc':80, 'tnc':20, 'tps':0.8, 'tns':0.2})
+    pos_list.append({'date':'Mon Jul 04 12:32:31 +0000 2016', 'tpc':70, 'tnc':30, 'tps':0.7, 'tns':0.3})
+    
+    return Response(json.dumps(pos_list, ensure_ascii=False).encode('utf8')
+                    , mimetype='application/json')
+    
+@app.route("/scrap/")
+def scrap():
+    
+
+    
+    import ticker_scrapper as ts
+    market, dict_tickers_by_sector = ts.get_snp500(dao)
+    result = []
+    for key, val in dict_tickers_by_sector.items():
+        result.extend(val)
+    
+    from threading import Thread
+    print('start threading...', file=sys.stdout)
+    thread = Thread(target = backend_scrapping, kwargs = {'arg':result})
+    thread.start()
+    print('end threading...', file=sys.stdout)
+    
+    return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
+                    , mimetype='application/json')
+    
+
+def backend_scrapping(arg):
+    print('start....', file=sys.stdout)
+    from time import sleep
+    import twittertest as tw
+    count = 0
+    for keyword in arg:
+        print('start getting [%s]' % keyword, file=sys.stdout)
+        tw.getTweets(keyword=keyword, mongodao=dao)
+        print('finish getting [%s]' % keyword, file=sys.stdout)
+        count += 1
+        if count % 150 == 0:
+            print('sleep for 10 minutes')
+            sleep(60*10)
+    print('all done')
     
 if __name__ == '__main__':
     app.run()
