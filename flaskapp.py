@@ -15,11 +15,11 @@ json.JSONEncoder.default = lambda self,obj: (int(mktime(obj.timetuple())) if isi
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('userInterface.html')
 
 @app.route('/<path:resource>')
 def serveStaticResource(resource):
-    return send_from_directory('static/', resource)
+    return send_from_directory('UI/', resource)
 
 @app.route("/test")
 def test():
