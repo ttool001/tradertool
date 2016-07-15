@@ -48,6 +48,15 @@ class Mongodao:
         if tickersFromDb:
             return tickersFromDb.get('tickers', None)
 
+    def get_all_tweets(self):
+        list = []
+        cursor = self.twits_db.twits.find()
+
+        print("found %s tweets" % cursor.count())
+        for tweet in cursor:
+            list.extend(tweet.get('twit'))
+        return list
+    
 if __name__ == "__main__":
 
     mongodao = Mongodao()
