@@ -34,5 +34,35 @@ def gettwit(keyword):
     return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
                     , mimetype='application/json')
 
+@app.route("/getlists/")
+def getlists():
+    
+    pos_list = []
+    pos_list.append({'ticker':'APPL', 'senti':0.9})
+    pos_list.append({'ticker':'JPM', 'senti':0.89})
+    pos_list.append({'ticker':'IBM', 'senti':0.79})
+    pos_list.append({'ticker':'V', 'senti':0.79})
+    pos_list.append({'ticker':'C', 'senti':0.69})
+    pos_list.append({'ticker':'GOOG', 'senti':0.69})
+    pos_list.append({'ticker':'JOBS', 'senti':0.59})
+    pos_list.append({'ticker':'FB', 'senti':0.59})
+    pos_list.append({'ticker':'MSFT', 'senti':0.49})
+    
+    neg_list = []
+    neg_list.append({'ticker':'SIRI', 'senti':-0.9})
+    neg_list.append({'ticker':'FTR', 'senti':-0.77})
+    neg_list.append({'ticker':'MNKD', 'senti':-0.76})
+    neg_list.append({'ticker':'AMD', 'senti':-0.69})
+    neg_list.append({'ticker':'INTC', 'senti':-0.59})
+    neg_list.append({'ticker':'OPK', 'senti':-0.59})
+    neg_list.append({'ticker':'MU', 'senti':-0.49})
+    neg_list.append({'ticker':'HBAN', 'senti':-0.39})
+    neg_list.append({'ticker':'NVAX', 'senti':-0.39})
+    
+    result = {'pos_list':pos_list, 'neg_list':neg_list}
+    
+    return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
+                    , mimetype='application/json')
+    
 if __name__ == '__main__':
     app.run()

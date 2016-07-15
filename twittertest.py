@@ -31,7 +31,7 @@ def get_oauth():
 # with open('berniesanderstest.csv', 'w',encoding="utf8") as f:
 #     a = csv.writer(f)
 
-def getTweets(keyword, mongodao, lang='en', count=200, result_type='mixed'):
+def getTweets(keyword, mongodao, lang='en', count=1000, result_type='mixed'):
     #make sure keyword is valid
     
     if not keyword:
