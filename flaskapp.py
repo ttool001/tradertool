@@ -3,8 +3,13 @@ from flask import Flask, request, flash, url_for, redirect, Response, \
      render_template, abort, send_from_directory
 from mongodb import mongodao
 from flask_cache import Cache
+
+from flask_cors import CORS, cross_origin
+
+
 dao = mongodao.Mongodao()
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Check Configuring Flask-Cache section for more details
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
