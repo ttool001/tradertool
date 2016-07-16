@@ -140,14 +140,15 @@ class StockSenti():
         for ticker in cursor:
             listOfTweets = ticker.get('tweetsByDate', None)
             listOfSentiTweets = []
-            for tweet in listOfTweets:
-                sen = f(tweet)
-                senti_score = self._classifiers.classify(self.best_word_features(sen.split()))
-                tweet['senti'] = senti_score
-                #print('[%s]\n' % json.dumps(tweet, ensure_ascii=False).encode('utf8'))
-                listOfSentiTweets.append(tweet)
-            ticker['tweetsByDate'] = listOfSentiTweets
-            mongodao.save_senti_ticker_by_keyword(ticker.get('keyword'), ticker)
+            if listOfTweets:
+                for tweet in listOfTweets:
+                    sen = f(tweet)
+                    senti_score = self._classifiers.classify(self.best_word_features(sen.split()))
+                    tweet['senti'] = senti_score
+                    #print('[%s]\n' % json.dumps(tweet, ensure_ascii=False).encode('utf8'))
+                    listOfSentiTweets.append(tweet)
+                ticker['tweetsByDate'] = listOfSentiTweets
+                mongodao.save_senti_ticker_by_keyword(ticker.get('keyword'), ticker)
                 
  
 if __name__ == "__main__":
