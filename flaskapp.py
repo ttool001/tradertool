@@ -91,6 +91,12 @@ def getticker(keyword):
     return Response(json.dumps(pos_list, ensure_ascii=False).encode('utf8')
                     , mimetype='application/json')
     
+@app.route("/gen_senti/")
+def gen_senti():
+    senti = StockSenti()
+    senti.run_senti_for_all_ticker(mongodao)
+    return Response('Senti generated', mimetype='application/plain')
+
 @app.route("/scrap/")
 def scrap():
     
