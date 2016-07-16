@@ -3,27 +3,23 @@
 <head>
     <meta charset="utf-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="width=device-width, initial=scale=1" name="viewport">
     <title>Sentiment Analysis</title><!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- Latest compiled and minified CSS -->
-    <link href=
-    "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel=
-    "stylesheet"><!-- jQuery library -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
+    <!-- jQuery library -->
     <script src=
     "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
-    </script><!-- Latest compiled JavaScript -->
-
-    <script src=
-    "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
     </script>
+
+    <!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <link href="my_style.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Berkshire+Swash' rel=
     'stylesheet' type='text/css'>
-    <script src=
-    "http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
-    </script>
+    
     <script src="http://code.highcharts.com/highcharts.js">
     </script>
 </head>
@@ -32,7 +28,7 @@
     <div class="modal fader" id="myModal" role="dialog">
         <div class="modal-dialog modal-lg">
             <!-- Modal content-->
-            <div class="modal-content" id='stock_modal'>
+            <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal" type=
                     "button">&times;</button>
@@ -65,8 +61,10 @@
         </div>
     </div>
     <script type="text/javascript">
-                var table_start='<table class="table table-bordered table-hover specialCollapse">';
-                var table_header='<thead class="thead-inverse"><tr><th class="col-md-6"><small>Ticker<\/small><\/th><th class="col-md-6"><small>Sentiment<\/small><\/th><\/tr><\/thead>';
+    			var div_start='<div class="table-responsive">';
+                var table_start='<table class="table table-striped table-sm table-hover table-condensed">';
+                var table_header_pos='<thead><tr class="success"><th class="col-md-6">Ticker<\/th><th class="col-md-6">Sentiment<\/th><\/tr><\/thead>';
+                var table_header_neg='<thead class="thead-inverse"><tr class="danger"><th class="col-md-6">Ticker<\/th><th class="col-md-6">Sentiment<\/th><\/tr><\/thead>';
                 var table_body_start='<tbody>';
                 var table_row_start='<tr class="clickable-row">';
                 var cell_start='<td class="col-md-6"><small>';
@@ -74,6 +72,7 @@
                 var table_row_end='<\/tr>';
                 var table_body_end='<\/tbody>';
                 var table_end='<\/table>';
+                var div_end='<\/div>'
 
                 function topFiveExtremeTickers(endpoint) {
                     var pos_list = new Array();
@@ -89,8 +88,8 @@
                             neg_list.push(this['senti']);
                         });
                         
-                        var table_creation_start_pos=table_start+table_header+table_body_start;
-                        var table_creation_start_neg=table_start+table_header+table_body_start;
+                        var table_creation_start_pos=div_start+table_start+table_header_pos+table_body_start+div_end;
+                        var table_creation_start_neg=div_start+table_start+table_header_neg+table_body_start+div_end;
                         for(var i=0; i<10; i=i+2){
                             table_creation_start_pos += table_row_start+cell_start+pos_list[i]+cell_end+cell_start+pos_list[i+1]+cell_end+table_row_end;
                         }
@@ -113,20 +112,13 @@
         </div>
         <nav role="navigation">
             <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button aria-expanded="false" class=
-                    "navbar-toggle collapsed" data-target=
-                    "#bs-example-navbar-collapse-1" data-toggle="collapse"
-                    type="button"><span class="sr-only">Toggle
-                    navigation</span> <span class="icon-bar"></span>
-                    <span class="icon-bar"></span> <span class=
-                    "icon-bar"></span></button>
-                </div>
+                
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input class="form-control" id="search" placeholder=
-                        "Search" type="text"> <button class="btn btn-info"
+                        "Search" type="text" onkeydown="if (event.keyCode == 13)
+                        document.getElementById('search_button').click()"> 
+                        <button class="btn btn-info"
                         data-target="#myModal" data-toggle="modal" id=
                         "search_button" type="button">Get Analytics</button>
                     </div>
@@ -167,16 +159,20 @@
              $(".clickable-row").click(function() {
                 window.document.location = $(this).data("href");
             });
-             $("button").click(function(){
-                // alert($("#search").val());
-                $('#selected_ticker').html($("#search").val());
-             });
-
              
             topFiveExtremeTickers('http://python-jphackathon.rhcloud.com/getlists/');
-            // topFiveExtremeTickers('http://python-jphackathon.rhcloud.com/getlists/', 'neg_list', '#table_negative');
         });
+		
+        
+
+
     </script> 
+    <script type="text/javascript">
+    	$("#search_button").on('click', function(){
+                alert($("#search").val());
+                $('#selected_ticker').html($("#search").val());
+             });
+    </script>
     <script type="text/javascript">
             $(document).on('click', '.panel-heading span.clickable', function(e){
                 var $this = $(this);
