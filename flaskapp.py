@@ -93,8 +93,6 @@ def getticker(keyword):
 @app.route("/scrap/")
 def scrap():
     
-
-    
     import ticker_scrapper as ts
     market, dict_tickers_by_sector = ts.get_snp500(dao)
     result = []
@@ -121,9 +119,9 @@ def backend_scrapping(arg):
         tw.getTweets(keyword=keyword, mongodao=dao)
         print('finish getting [%s]' % keyword, file=sys.stdout)
         count += 1
-        if count % 150 == 0:
-            print('sleep for 10 minutes')
-            sleep(60*10)
+        if count % 170 == 0:
+            print('sleep for 14 minutes')
+            sleep(60*14)
     print('all done')
     
 if __name__ == '__main__':
