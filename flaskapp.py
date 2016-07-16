@@ -95,7 +95,7 @@ def getticker(keyword):
 def gen_senti():
     from senti import StockSenti
     senti = StockSenti()
-    senti.run_senti_for_all_ticker(mongodao)
+    senti.run_senti_for_all_ticker(dao)
     return Response('Senti generated', mimetype='application/plain')
 
 @app.route("/scrap/")
