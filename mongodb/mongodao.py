@@ -82,7 +82,8 @@ class Mongodao:
             tps = float(tpc/ttc)
             tns = float(tnc/ttc)
             result.append({'date':key, 'tpc':tpc, 'tnc':tnc, 'tps':tps, 'tns':tns})
-        print(result)       
+        print(result)    
+        return result   
         #{'date':'Wed Jul 06 12:32:31 +0000 2016', 'tpc':90, 'tnc':10, 'tps':0.9, 'tns':0.1}
         
         

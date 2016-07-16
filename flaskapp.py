@@ -82,11 +82,12 @@ def getlists():
 @app.route("/getticker/<keyword>")
 def getticker(keyword):
     
-    pos_list = []
+    pos_list = dao.get_senti_ticker_by_keyword(keyword)
+    '''
     pos_list.append({'date':'Wed Jul 06 12:32:31 +0000 2016', 'tpc':90, 'tnc':10, 'tps':0.9, 'tns':0.1})
     pos_list.append({'date':'Tue Jul 05 12:32:31 +0000 2016', 'tpc':80, 'tnc':20, 'tps':0.8, 'tns':0.2})
     pos_list.append({'date':'Mon Jul 04 12:32:31 +0000 2016', 'tpc':70, 'tnc':30, 'tps':0.7, 'tns':0.3})
-    
+    '''
     return Response(json.dumps(pos_list, ensure_ascii=False).encode('utf8')
                     , mimetype='application/json')
     
