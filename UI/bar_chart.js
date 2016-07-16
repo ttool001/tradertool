@@ -79,19 +79,19 @@ $('#search_button').click(function(){
             dayDict = {'Mon':0, 'Tue':1, 'Wed':2, 'Thurs':3, 'Thur':3, 'Thu':3, 'Fri':4, 'Sat':5, 'Sun':6 }
             pos_values = [0,0,0,0,0,0,0];
             neg_values = [0,0,0,0,0,0,0];
-            if (result.length > 0){
+            if (!$.isEmptyObject(result)){
                for (var i = 0; i < result.length; i++){
                   day =  result[i]['date'].split(' ')[0];
                   pos_values[dayDict[day]] = result[i]["tpc"];
                   neg_values[dayDict[day]] = result[i]["tnc"];
+                  chartData = addInitialValues(pos_values, neg_values);
+                  $('#container_bar_chart').highcharts(chartData);
                }
 
             } else{
                chartData = {title:{text:"Ticker Doesn't Exist"}};
                $('#container_bar_chart').highcharts(chartData);
             }
-            chartData = addInitialValues(pos_values, neg_values);
-            $('#container_bar_chart').highcharts(chartData);
          });
       }
       
