@@ -144,7 +144,7 @@ class StockSenti():
                 sen = f(tweet)
                 senti_score = self._classifiers.classify(self.best_word_features(sen.split()))
                 tweet['senti'] = senti_score
-                print('[%s]\n' % json.dumps(tweet, ensure_ascii=False).encode('utf8'))
+                #print('[%s]\n' % json.dumps(tweet, ensure_ascii=False).encode('utf8'))
                 listOfSentiTweets.append(tweet)
             ticker['tweetsByDate'] = listOfSentiTweets
             mongodao.save_senti_ticker_by_keyword(ticker.get('keyword'), ticker)
