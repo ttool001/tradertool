@@ -29,8 +29,7 @@ class Mongodao:
         twitFromDb = self.twits_db.twits.find_one({"keyword":keyword})
         if twitFromDb:
             twit['_id'] = twitFromDb['_id']
-        epoch = datetime.datetime.utcnow()
-        twit['lastUpdate'] = epoch
+        twit['lastUpdate'] = datetime.datetime.utcnow()
         self.twits_db.twits.save(twit)
         del twit['_id']
         del twit['lastUpdate']
@@ -52,17 +51,14 @@ class Mongodao:
         list = []
         cursor = self.twits_db.twits.find()
 
-        print("found %s tweets" % cursor.count())
+        print("found %s tickers" % cursor.count())
+        f = lambda ws: ws.get('tweet', None)
         for tweet in cursor:
-            list.extend(tweet.get('twit'))
+            list.extend(f(x) for x in tweet.get('tweetsByDate', None))
+        print("found %s tweets" % len(list))
         return list
     
 if __name__ == "__main__":
 
     mongodao = Mongodao()
-    mocktwit = []
-    mocktwit.append('#APPL is going to drop like fly because iphone 7 is not impressive')
-    twit = {'keyword':'APPL', 'twits':mocktwit}
-    mongodao.save_twit_by_keyword('APPL', twit)
-    result = mongodao.get_twit_by_keyword('APPL')
-    print(result)
+    print(mongodao.get_all_tweets())
