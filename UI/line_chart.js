@@ -1,54 +1,74 @@
 $(document).ready(function() {
-   var title = {
-      text: 'Average Tweet Sentiment'   
-   };
-   var subtitle = {
-      text: 'Source: https://www.twitter.com/'
-   };
-   var xAxis = {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-   };
-   var yAxis = {
-      title: {
-         text: 'Sentiment'
-      },
-      plotLines: [{
-         value: 0,
-         width: 1,
-         color: '#808080'
-      }]
-   };   
 
-   var legend = {
-      layout: 'vertical',
-      align: 'right',
-      verticalAlign: 'middle',
-      borderWidth: 0
-   };
+   function addInitialValues(pos_values, neg_values){
+      var chartData = {}
+      var title = {
+         text: 'Average Tweet Sentiment'   
+      };
+      var subtitle = {
+         text: 'Source: https://www.twitter.com/'
+      };
+      var xAxis = {
+         categories: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat','Sun']
+      };
 
-   var series =  [
-      {
-         name: 'Positivity',
-         data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2,
-            26.5, 23.3, 18.3, 13.9, 9.6]
-      }, 
-      {
-         name: 'Negativity',
-         data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 
-            16.6, 14.2, 10.3, 6.6, 4.8]
+      var yAxis = { title: {text: 'Sentiment'}, plotLines: [{value: 0,width: 1,color: '#808080'}]};  
+
+
+
+      var legend = {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'middle',
+         borderWidth: 0
+      };
+
+      var series = [{name:'Positivity',data:pos_values}, {name:'Negativity', data:neg_values}]
+
+      chartData.title = title;
+      chartData.subtitle = subtitle;
+      chartData.xAxis = xAxis;
+      chartData.yAxis = yAxis;
+      // chartData.tooltip = tooltip;
+      chartData.legend = legend;
+      chartData.series = series;
+      return chartData;
+
+   }
+
+
+   $('#search_button').click(function(){
+      var endpoint = 'http://python-jphackathon.rhcloud.com/getticker/';
+      var nameOfTicker = $("#search").val();
+      var fullendpoint = endpoint + nameOfTicker;
+
+
+      if (nameOfTicker == '') {
+         chartData = {title:{text:"No Ticker Entered"}};
+         $('#container_line_chart').highcharts(chartData);
+
+      } else {
+         $.get(fullendpoint, function(result){
+            dayDict = {'Mon':0, 'Tue':1, 'Wed':2, 'Thurs':3, 'Thur':3, 'Thu':3, 'Fri':4, 'Sat':5, 'Sun':6 }
+            pos_values = [,,,,,,];
+            neg_values = [,,,,,,];
+            if (result.length > 0){
+               for (var i = 0; i < result.length; i++){
+                  day =  result[i]['date'].split(' ')[0];
+                  pos_values[dayDict[day]] = result[i]["tps"];
+                  neg_values[dayDict[day]] = result[i]["tns"];
+               }
+
+            } else{
+               chartData = {title:{text:"Ticker Doesn't Exist"}};
+               $('#container_line_chart').highcharts(chartData);
+            }
+            chartData = addInitialValues(pos_values, neg_values);
+            $('#container_line_chart').highcharts(chartData);
+         });
       }
-   ];
+      
+   });
 
-   var json = {};
 
-   json.title = title;
-   json.subtitle = subtitle;
-   json.xAxis = xAxis;
-   json.yAxis = yAxis;
-   // json.tooltip = tooltip;
-   json.legend = legend;
-   json.series = series;
-
-   $('#container_line_chart').highcharts(json);
 });

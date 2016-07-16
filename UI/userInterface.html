@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial=scale=1" name="viewport">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Sentiment Analysis</title><!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
@@ -32,7 +32,7 @@
     <div class="modal fader" id="myModal" role="dialog">
         <div class="modal-dialog modal-lg">
             <!-- Modal content-->
-            <div class="modal-content">
+            <div class="modal-content" id='stock_modal'>
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal" type=
                     "button">&times;</button>
@@ -170,7 +170,7 @@
              $("button").click(function(){
                 // alert($("#search").val());
                 $('#selected_ticker').html($("#search").val());
-             })
+             });
 
              
             topFiveExtremeTickers('http://python-jphackathon.rhcloud.com/getlists/');
