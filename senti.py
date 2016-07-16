@@ -22,12 +22,12 @@ class StockSenti():
         self.word_scores = self.create_word_scores()     
         self.best_words = self.find_best_words(self.word_scores, 15000)
         self._classifiers = self.evaluate_features(self.best_word_features)
-            
+    '''     
     stopset = set(stopwords.words('english'))
  
     def stopword_filtered_word_feats(words):
         return dict([(word, True) for word in words if word not in stopset])
-    
+    '''
     #this function takes a feature selection mechanism and returns its performance in a variety of metrics
     def evaluate_features(self, feature_select):
         posFeatures = []
@@ -136,12 +136,24 @@ class StockSenti():
  
 if __name__ == "__main__":
 
+    import json
     mongodao = Mongodao()
     senti = StockSenti()
-    twit = mongodao.get_twit_by_keyword('FSLR')
-    if twit:
-        listOfTweets = twit.get('twit', None)
-        for sen in listOfTweets:
-            print('[%s], [%s]' % 
-                (senti._classifiers.classify(senti.best_word_features(sen.split())), sen))
+    cursor = mongodao.get_all_tweetsByDate()
+    list= []
+    f = lambda ws: ws.get('tweet', None)
+    for ticker in cursor:
+        listOfTweets = ticker.get('tweetsByDate', None)
+        listOfSentiTweets = []
+        for tweet in listOfTweets:
+            sen = f(tweet)
+            senti_score = senti._classifiers.classify(senti.best_word_features(sen.split()))
+            tweet['senti'] = senti_score
+            print('[%s]\n' % json.dumps(tweet, ensure_ascii=False).encode('utf8'))
+            listOfSentiTweets.append(tweet)
+        ticker['tweetsByDate'] = listOfSentiTweets
+        mongodao.save_senti_ticker_by_keyword(ticker.get('keyword'), ticker)
+    
+
+            
        

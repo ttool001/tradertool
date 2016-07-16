@@ -30,10 +30,17 @@ def writeToFile(list):
         fh.write('%s' % b.encode('utf-8'))
         fh.write('\n')
         index += 1
-            
+
+def splitPosNeg(filename):
+    with open(filename, 'r') as fh:
+        for line in fh:
 
 if __name__ == "__main__":
+    '''
     mongodao = Mongodao()
     list = mongodao.get_all_tweets()
     writeToFile(list)
+    '''
+    
+    
        
