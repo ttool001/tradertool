@@ -49,9 +49,9 @@ $(document).ready(function() {
 
       } else {
          $.get(fullendpoint, function(result){
-            dayDict = {'Mon':0, 'Tue':1, 'Wed':2, 'Thurs':3, 'Thur':3, 'Thu':3, 'Fri':4, 'Sat':5, 'Sun':6 }
-            pos_values = [,,,,,,];
-            neg_values = [,,,,,,];
+            dayDict = {'Mon':0, 'Tue':1, 'Wed':2, 'Thu':3, 'Fri':4, 'Sat':5, 'Sun':6 }
+            pos_values = [0,0,0,0,0,0,0];
+            neg_values = [0,0,0,0,0,0,0];
             if (result.length > 0){
                for (var i = 0; i < result.length; i++){
                   day =  result[i]['date'].split(' ')[0];
