@@ -113,7 +113,7 @@ class StockSentiAnalyzer():
     def best_word_features(self,words):
         return dict([(word, True) for word in words if word in self.best_words])
 
-    def best_bigram_word_feats(self,words, score_fn=BigramAssocMeasures.chi_sq, n=200):
+    def best_bigram_word_feats(self,words, score_fn=BigramAssocMeasures.chi_sq, n=10):
         bigram_finder = BigramCollocationFinder.from_words(words)
         bigrams = bigram_finder.nbest(score_fn, n)
         d = dict([(bigram, True) for bigram in bigrams])
