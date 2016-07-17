@@ -28,6 +28,11 @@ li a:hover:not(.active) {
     background-color: #111;
 }
 
-.active {
+.active_tab {
     background-color: #4CAF50;
 }
+
+$('.modal-toggle').click(function (e) {
+    var tab = e.target.hash;
+    $('li > a[href="' + tab + '"]').tab("show");
+});
