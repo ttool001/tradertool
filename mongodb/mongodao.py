@@ -87,6 +87,37 @@ class Mongodao:
         #{'date':'Wed Jul 06 12:32:31 +0000 2016', 'tpc':90, 'tnc':10, 'tps':0.9, 'tns':0.1}
         
         
+    def get_senti_for_all_tickers(self):
+        cursor = self.twits_db.senti_tweets.find()
+        print("found %s senti tickers" % cursor.count())
+        
+        listTickerToSenti = []
+        for ticker in cursor:
+            neg_count = 0
+            pos_count = 0
+            total_count = 0            
+            for x in ticker.get('tweetsByDate', None):
+
+                if x:
+                    if x.get('senti') == 'neg':
+                        neg_count += 1
+                    else:
+                        pos_count += 1
+                    total_count += 1
+            listTickerToSenti.append({'ticker':ticker.get('keyword'), 'pos':float(pos_count/total_count), 'neg':neg_count/total_count})
+        
+        negSortList = sorted(listTickerToSenti, key=lambda item: (item.get('pos')))
+        n = lambda item: {'ticker':item.get('ticker'), 'senti':item.get('neg', 0) * -1}
+        neg_list = [n(item) for item in negSortList[0:5]]
+        posSortList = sorted(listTickerToSenti, key=lambda item: (item.get('pos')), reverse=True)
+        p = lambda item: {'ticker':item.get('ticker'), 'senti':item.get('pos')}
+        pos_list = [p(item) for item in posSortList[0:5]]
+        print ("%s" % pos_list) 
+        print ("%s" % neg_list) 
+        return pos_list, neg_list
+        #print(listTickerToSenti)
+        #pos_list.append({'ticker':'APPL', 'senti':0.9})
+        
     def save_ticker_by_key(self, key, val):
         tickersFromDb = self.ticker_db.tickers.find_one({"key":key})
         if not tickersFromDb:
@@ -119,5 +150,6 @@ class Mongodao:
 if __name__ == "__main__":
 
     mongodao = Mongodao()
-    mongodao.get_senti_ticker_by_keyword('MON')
+    mongodao.get_senti_for_all_tickers()
+    #mongodao.get_senti_ticker_by_keyword('MON')
     #print(mongodao.get_all_tweets())
