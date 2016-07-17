@@ -5,6 +5,7 @@ import json  # or `import simplejson as json` if on Python < 2.6
 import pymongo
 import datetime
 import os
+from _ast import keyword
 
 p = '%Y-%m-%dT%H:%M:%S.%fZ'
     
@@ -49,6 +50,20 @@ class Mongodao:
         ticker['lastUpdate'] = datetime.datetime.utcnow()
         self.twits_db.senti_tweets.save(ticker)
 
+    def get_senti_tweet_by_keyword(self, keyword):
+        if keyword:
+            keyword = keyword.upper()
+        print('getting ticker for %s' % keyword)
+        if not keyword:
+            return {}
+        ticker = self.twits_db.senti_tweets.find_one({"keyword":keyword})
+        
+        if not ticker:
+            return {}
+        else:
+            return ticker
+        
+        
     def get_senti_ticker_by_keyword(self, keyword):
         if keyword:
             keyword = keyword.upper()

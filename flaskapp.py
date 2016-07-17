@@ -99,6 +99,31 @@ def gen_senti():
     senti.run_senti_for_all_ticker(dao)
     return Response('Senti generated', mimetype='application/plain')
 
+@app.route("/get_sample_tweets/<keyword>")
+def get_sample_tweets(keyword):
+    
+    senti_tweet = dao.get_senti_tweet_by_keyword(keyword)
+    if senti_tweet:
+        listOfTweets = senti_tweet.get('tweetsByDate')
+        pos_list = set()
+        neg_list = set()
+        for tweet in listOfTweets:
+            sentiVal = tweet.get('senti', None)
+            if sentiVal:
+                if sentiVal == 'pos':
+                    pos_list.add(tweet.get('tweet'))
+                else:
+                    neg_list.add(tweet.get('tweet'))
+    
+        
+        result = {'neg_list':list(neg_list)[0:5], 'pos_list':list(pos_list)[0:5]}
+    else:
+        result = {}
+    
+    return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
+                , mimetype='application/json')
+
+
 @app.route("/scrap/")
 def scrap():
     
@@ -117,35 +142,6 @@ def scrap():
     return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
                     , mimetype='application/json')
 
-@app.route("/scrapremote/")
-def scrapremote():
-    
-    import ticker_scrapper as ts
-    market, dict_tickers_by_sector = ts.get_snp500(dao)
-    result = []
-    for key, val in dict_tickers_by_sector.items():
-        result.extend(val)
-    
-    from threading import Thread
-    print('start threading...', file=sys.stdout)
-    thread = Thread(target = remote_scrapping, kwargs = {'list':result})
-    thread.start()
-    print('end threading...', file=sys.stdout)
-    
-    return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
-                    , mimetype='application/json')
-
-def remote_scrapping(list):
-    print('start remote scrapping')
-    from time import sleep
-    import requests
-    count = 0
-    for keyword in list:
-        requests.get(url='python-jphackathon.rhcloud.com/gettwit/' % keyword)
-        count += 1
-        if count % 170 == 0:
-            print('sleep for 15 minutes')
-            sleep(930)
     
 def backend_scrapping(arg):
     print('start....', file=sys.stdout)
@@ -154,9 +150,9 @@ def backend_scrapping(arg):
     count = 0
     for keyword in arg:
         print('start getting [%s]' % keyword, file=sys.stdout)
-        tw.getTweets(keyword=keyword, mongodao=dao)
+        pages = tw.scrapTweets(keyword=keyword, mongodao=dao)
         print('finish getting [%s]' % keyword, file=sys.stdout)
-        count += 1
+        count += pages
         if count % 175 == 0:
             print('sleep for 16 minutes')
             sleep(60*16)
