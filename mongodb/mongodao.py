@@ -20,6 +20,8 @@ class Mongodao:
         self.ticker_db = client.tickerdb
     
     def get_twit_by_keyword(self, keyword):
+        if keyword:
+            keyword = keyword.upper()
         twit = self.twits_db.twits.find_one({"keyword":keyword})
         if not twit:
             return {}
@@ -28,6 +30,8 @@ class Mongodao:
             return twit
     
     def save_twit_by_keyword(self, keyword, twit):
+        if keyword:
+            keyword = keyword.upper()
         twitFromDb = self.twits_db.twits.find_one({"keyword":keyword})
         if twitFromDb:
             twit['_id'] = twitFromDb['_id']
@@ -37,6 +41,8 @@ class Mongodao:
         del twit['lastUpdate']
         
     def save_senti_ticker_by_keyword(self, keyword, ticker):
+        if keyword:
+            keyword = keyword.upper()
         twitFromDb = self.twits_db.senti_tweets.find_one({"keyword":keyword})
         if twitFromDb:
             ticker['_id'] = twitFromDb['_id']
@@ -44,6 +50,8 @@ class Mongodao:
         self.twits_db.senti_tweets.save(ticker)
 
     def get_senti_ticker_by_keyword(self, keyword):
+        if keyword:
+            keyword = keyword.upper()
         if not keyword:
             return {}
         ticker = self.twits_db.senti_tweets.find_one({"keyword":keyword})
@@ -119,6 +127,8 @@ class Mongodao:
         #pos_list.append({'ticker':'APPL', 'senti':0.9})
         
     def save_ticker_by_key(self, key, val):
+        if key:
+            key = key.upper()
         tickersFromDb = self.ticker_db.tickers.find_one({"key":key})
         if not tickersFromDb:
             tickersFromDb = dict()
@@ -127,6 +137,8 @@ class Mongodao:
         self.ticker_db.tickers.save(tickersFromDb)
     
     def get_ticker_by_key(self, key):
+        if key:
+            key = key.upper()
         tickersFromDb = self.ticker_db.tickers.find_one({"key":key})
         if tickersFromDb:
             return tickersFromDb.get('tickers', None)
