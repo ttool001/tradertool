@@ -52,6 +52,7 @@ class Mongodao:
     def get_senti_ticker_by_keyword(self, keyword):
         if keyword:
             keyword = keyword.upper()
+        print('getting ticker for %s' % keyword)
         if not keyword:
             return {}
         ticker = self.twits_db.senti_tweets.find_one({"keyword":keyword})

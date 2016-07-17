@@ -33,7 +33,8 @@ def get_oauth():
 
 def getTweets(keyword, mongodao, lang='en', count=10000, result_type='mixed'):
     #make sure keyword is valid
-    
+    if keyword:
+        keyword = keyword.upper()
     if not keyword:
         return 'keyword needs to be valid'
     else:
