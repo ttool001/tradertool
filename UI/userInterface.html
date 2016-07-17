@@ -20,7 +20,7 @@
     <script src="http://code.highcharts.com/highcharts.js">
     </script>
 </head>
-<body>
+<body style="background-color: #191919;" >
     <ul>
         <li>
             <a class="active_tab" href="#home">Home</a>
@@ -132,7 +132,7 @@
                 }
             
     </script>
-    <header class="navbar-default" role="banner">
+    <header class="navbar navbar-default" style="background-color: #e3f2fd;" role="banner">
         <div class="container">
             <div class="page-header">
                 <h1 class="text-center">Stock Sentiment Analysis</h1>
@@ -144,7 +144,10 @@
                     <input class="form-control text-center" id="search"
                     onkeydown=
                     "if (event.keyCode == 13) document.getElementById('search_button').click()"
-                    placeholder="Search..." type="text"> <button class=
+                    placeholder="Search..." type="text">
+                </div>
+                <div class="form-group"></div>
+                    <button class=
                     "btn btn-info center-block" data-target="#myModal"
                     data-toggle="modal" id="search_button" type="button">Get
                     Analytics</button>
@@ -157,8 +160,8 @@
             <div class="col-sm-6">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">You want to buy these
-                        :)</h3><span class="pull-right clickable"><i class=
+                        <h3 class="panel-title"><center><b>You want to buy these
+                        :)</b></center></h3><span class="pull-right clickable"><i class=
                         "glyphicon glyphicon-chevron-up"></i></span>
                     </div>
                     <div class="panel-body">
@@ -169,8 +172,8 @@
             <div class="col-sm-6">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title">You want to dump these
-                        :(</h3><span class="pull-right clickable"><i class=
+                        <h3 class="panel-title"><center><b>You want to dump these
+                        :(</b></center></h3><span class="pull-right clickable"><i class=
                         "glyphicon glyphicon-chevron-up"></i></span>
                     </div>
                     <div class="panel-body">
