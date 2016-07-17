@@ -6,11 +6,8 @@
     <meta content="width=device-width, initial=scale=1" name="viewport">
     <title>Sentiment Analysis</title><!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Latest compiled and minified CSS -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
- -->
-    <!-- jQuery library -->
 
+    <!-- jQuery library -->
     <script src=
     "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
     </script><!-- Latest compiled and minified JavaScript -->
@@ -23,8 +20,15 @@
     'stylesheet' type='text/css'>
     <script src="http://code.highcharts.com/highcharts.js">
     </script>
+
+
 </head>
 <body>
+<ul>
+  <li><a class="active" href="#home">Home</a></li>
+  <li><a href="about.html">About</a></li>
+  <li><a href="contact.html">Contact</a></li>
+</ul>
     <!-- Modal -->
     <div class="modal fader" id="myModal" role="dialog">
         <div class="modal-dialog modal-lg">
@@ -35,6 +39,10 @@
                     "button">&times;</button>
                     <h4 class="modal-title">Stock Analytics for $<label id=
                     "selected_ticker"></label></h4>
+                    <ul>
+  <li><a class="active" href="#home">Graphs</a></li>
+  <li><a href="#contact">Tweets</a></li>
+</ul>
                 </div>
                 <div class="modal-body">
                     <div class="row">
