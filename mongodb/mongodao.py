@@ -107,10 +107,10 @@ class Mongodao:
             listTickerToSenti.append({'ticker':ticker.get('keyword'), 'pos':float(pos_count/total_count), 'neg':neg_count/total_count})
         
         negSortList = sorted(listTickerToSenti, key=lambda item: (item.get('pos')))
-        n = lambda item: {'ticker':item.get('ticker'), 'senti':item.get('neg', 0) * -1}
+        n = lambda item: {'ticker':item.get('ticker'), 'senti':round(item.get('neg', 0) * -1, 2)}
         neg_list = [n(item) for item in negSortList[0:5]]
         posSortList = sorted(listTickerToSenti, key=lambda item: (item.get('pos')), reverse=True)
-        p = lambda item: {'ticker':item.get('ticker'), 'senti':item.get('pos')}
+        p = lambda item: {'ticker':item.get('ticker'), 'senti':round(item.get('pos'), 2)}
         pos_list = [p(item) for item in posSortList[0:5]]
         print ("%s" % pos_list) 
         print ("%s" % neg_list) 
