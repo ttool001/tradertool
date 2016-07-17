@@ -51,7 +51,7 @@ def gettwit(keyword):
 
 @app.route("/getlists/")
 def getlists():
-    
+    '''
     pos_list = []
     pos_list.append({'ticker':'APPL', 'senti':0.9})
     pos_list.append({'ticker':'JPM', 'senti':0.89})
@@ -73,7 +73,8 @@ def getlists():
     neg_list.append({'ticker':'MU', 'senti':-0.49})
     neg_list.append({'ticker':'HBAN', 'senti':-0.39})
     neg_list.append({'ticker':'NVAX', 'senti':-0.39})
-    
+    '''
+    pos_list, neg_list = dao.get_senti_for_all_tickers()
     result = {'pos_list':pos_list, 'neg_list':neg_list}
     
     return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
