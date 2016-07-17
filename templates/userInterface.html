@@ -20,7 +20,7 @@
     <script src="http://code.highcharts.com/highcharts.js">
     </script>
 </head>
-<body style="background-color: #191919;" >
+<body style="background-color: #191919;">
     <ul>
         <li>
             <a class="active_tab" href="#home">Home</a>
@@ -134,7 +134,8 @@
                 }
             
     </script>
-    <header class="navbar navbar-default" style="background-color: #e3f2fd;" role="banner">
+    <header class="navbar navbar-default" role="banner" style=
+    "background-color: #e3f2fd;">
         <div class="container">
             <div class="page-header">
                 <h1 class="text-center">Stock Sentiment Analysis</h1>
@@ -148,12 +149,9 @@
                     "if (event.keyCode == 13) document.getElementById('search_button').click()"
                     placeholder="Search..." type="text">
                 </div>
-                <div class="form-group"></div>
-                    <button class=
-                    "btn btn-info center-block" data-target="#myModal"
-                    data-toggle="modal" id="search_button" type="button">Get
-                    Analytics</button>
-                </div>
+                <div class="form-group"></div><button class=
+                "btn btn-info center-block" data-target="#myModal" data-toggle=
+                "modal" id="search_button" type="button">Get Analytics</button>
             </div><!-- /.container-fluid -->
         </nav>
     </header><br>
@@ -162,8 +160,10 @@
             <div class="col-sm-6">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><center><b>You want to buy these
-                        :)</b></center></h3><span class="pull-right clickable"><i class=
+                        <center>
+                            <h3 class="panel-title"><b>You want to buy these
+                            :)</b></h3>
+                        </center><span class="pull-right clickable"><i class=
                         "glyphicon glyphicon-chevron-up"></i></span>
                     </div>
                     <div class="panel-body">
@@ -174,8 +174,10 @@
             <div class="col-sm-6">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><center><b>You want to dump these
-                        :(</b></center></h3><span class="pull-right clickable"><i class=
+                        <center>
+                            <h3 class="panel-title"><b>You want to dump these
+                            :(</b></h3>
+                        </center><span class="pull-right clickable"><i class=
                         "glyphicon glyphicon-chevron-up"></i></span>
                     </div>
                     <div class="panel-body">
@@ -194,8 +196,146 @@
         function clickfunc(obj) {
             var selected_ticker_from_table = $(obj).text();
             $('#selected_ticker').html(selected_ticker_from_table);
+
+
+              var endpoint = 'http://python-jphackathon.rhcloud.com/getticker/';
+              // var nameOfTicker = $("#search").val();
+              var fullendpoint = endpoint + selected_ticker_from_table;
+
+
+              if (selected_ticker_from_table == '') {
+                 chartData_line = {title:{text:"No Ticker Entered"}};
+                 $('#container_line_chart').highcharts(chartData_line);
+                 $('#container_bar_chart').highcharts(chartData_line);
+              } else {
+                 $.get(fullendpoint, function(result){
+                    dayDict_line = {'Mon':0, 'Tue':1, 'Wed':2, 'Thu':3, 'Fri':4, 'Sat':5, 'Sun':6 }
+                    dayDict_bar = {'Mon':0, 'Tue':1, 'Wed':2, 'Thurs':3, 'Thur':3, 'Thu':3, 'Fri':4, 'Sat':5, 'Sun':6 }
+                    pos_values_line = [0,0,0,0,0,0,0];
+                    neg_values_line = [0,0,0,0,0,0,0];
+                    pos_values_bar = [0,0,0,0,0,0,0];
+                    neg_values_bar = [0,0,0,0,0,0,0];
+                    if (!$.isEmptyObject(result)){
+                       for (var i = 0; i < result.length; i++){
+                          day =  result[i]['date'].split(' ')[0];
+                          pos_values_line[dayDict_line[day]] = result[i]["tps"];
+                          neg_values_line[dayDict_line[day]] = result[i]["tns"];
+                          pos_values_bar[dayDict_bar[day]] = result[i]["tpc"];
+                          neg_values_bar[dayDict_bar[day]] = result[i]["tnc"];
+                          chartData_line = addInitialValuesLine(pos_values_line, neg_values_line);
+                          chartData_bar = addInitialValuesBar(pos_values_bar, neg_values_bar);
+                          $('#container_line_chart').highcharts(chartData_line);
+                          $('#container_bar_chart').highcharts(chartData);
+                       }
+
+                    } else{
+                       chartData_line = {title:{text:"Ticker Doesn't Exist"}};
+                       $('#container_line_chart').highcharts(chartData_line);
+                       $('#container_bar_chart').highcharts(chartData_bar);
+                    }
+                 });
+              }
+
+              function addInitialValuesLine(pos_values_line, neg_values_line){
+                  var chartData_line = {}
+                  var title = {
+                     text: 'Average Tweet Sentiment'   
+                  };
+                  var subtitle = {
+                     text: 'Source: https://www.twitter.com/'
+                  };
+                  var xAxis = {
+                     categories: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat','Sun']
+                  };
+
+                  var yAxis = { title: {text: 'Sentiment'}, plotLines: [{value: 0,width: 1,color: '#808080'}]};  
+
+
+
+                  var legend = {
+                     layout: 'vertical',
+                     align: 'right',
+                     verticalAlign: 'middle',
+                     borderWidth: 0
+                  };
+
+                  var series = [{name:'Positivity',data:pos_values_line}, {name:'Negativity', data:neg_values_line}]
+
+                  chartData_line.title = title;
+                  chartData_line.subtitle = subtitle;
+                  chartData_line.xAxis = xAxis;
+                  chartData_line.yAxis = yAxis;
+                  // chartData_line.tooltip = tooltip;
+                  chartData_line.legend = legend;
+                  chartData_line.series = series;
+                  return chartData_line;
+                }
+
+                function addInitialValuesBar(pos_values, neg_values) {
+                    chartData = {}
+
+         var chart = {
+            type: 'bar'
+         };
+         var title = {
+            text: 'Tweet Computation'   
+         };
+         var subtitle = {
+            text: 'Source: https://www.twitter.com/'  
+         };
+         var xAxis = {
+            categories: ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+            title: {
+               text: null
+            }
+         };
+         var yAxis = {
+            min: 0,
+            title: {
+               text: 'Sentiment',
+               align: 'high'
+            },
+            labels: {
+               overflow: 'justify'
+            }
+         };
+         var plotOptions = {
+            bar: {
+               dataLabels: {
+                  enabled: true
+               }
+            }
+         };
+         var legend = {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: 10,
+            y: 0,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+         };
+         var credits = {
+            enabled: false
+         };
+
+         var series = [{name:'Positivity',data:pos_values}, {name:'Negativity', data:neg_values}]
+
+         chartData.chart = chart; 
+         chartData.title = title;   
+         chartData.subtitle = subtitle; 
+         chartData.xAxis = xAxis;
+         chartData.yAxis = yAxis;  
+         chartData.series = series;
+         chartData.plotOptions = plotOptions;
+         chartData.legend = legend;
+         chartData.credits = credits;
+         return chartData;
+                }
          }
-    </script>
+    </script> 
     <script type="text/javascript">
         $(document).on("click", 'ul li', function(){
             $('ul li').removeClass('active_tab');
@@ -212,7 +352,7 @@
                 // alert($("#search").val());
                 $('#selected_ticker').html($("#search").val());
              });
-    </script>
+    </script> 
     <script type="text/javascript">
             $(document).on('click', '.panel-heading span.clickable', function(e){
                 var $this = $(this);
