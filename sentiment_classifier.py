@@ -1,12 +1,8 @@
 import os
 import time
 import re
-
-from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import  BernoulliNB
 from sklearn.metrics import classification_report, accuracy_score
 
 
@@ -14,7 +10,8 @@ from sklearn.metrics import classification_report, accuracy_score
 class SentimentClassifier():
 
     def __init__(self):
-        self.stopset = list(stopwords.words('english'))
+        STOP_WORD_FILE = os.path.join('polarityData', 'english.txt')
+        self.stopset = open(STOP_WORD_FILE,'r').read().split()
         self.stopset += ['t', 'AT_USER', 'STOCK', 'URL', 'RT']
         self.stopset.remove('above')
         self.stopset.remove('below')
