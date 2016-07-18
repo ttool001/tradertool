@@ -94,11 +94,19 @@ def getticker(keyword):
     
 @app.route("/gen_senti/")
 def gen_senti():
-    from senti import StockSenti
-    senti = StockSenti()
-    senti.run_senti_for_all_ticker(dao)
-    return Response('Senti generated', mimetype='application/plain')
+    from threading import Thread
+    print('start threading...', file=sys.stdout)
+    thread = Thread(target = gen_senti_thread)
+    thread.start()
+    print('end threading...', file=sys.stdout)
+    
+    return Response('Senti generation running in the background...', mimetype='application/json')
 
+def gen_senti_thread():
+    import sentiment_classifier as sc
+    senti = sc.SentimentClassifier()
+    senti.run_senti_for_all_ticker(dao)
+    
 @app.route("/get_sample_tweets/<keyword>")
 def get_sample_tweets(keyword):
     

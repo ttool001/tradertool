@@ -84,6 +84,24 @@ class SentimentClassifier():
         print(accuracy_score3)
         return classifier_liblinear
 
+    def run_senti_for_all_ticker(self, mongodao):
+        cursor = mongodao.get_all_tweetsByDate()
+        list= []
+        f = lambda ws: ws.get('tweet', None)
+        for ticker in cursor:
+            listOfTweets = ticker.get('tweetsByDate', None)
+            listOfSentiTweets = []
+            if listOfTweets:
+                for tweet in listOfTweets:
+                    sen = f(tweet)
+                    senti_score = self.classify_tweet(sen)
+                    if senti_score:
+                        senti_score = senti_score[0]
+                    tweet['senti'] = senti_score
+                    #print('[%s]\n' % json.dumps(tweet, ensure_ascii=False).encode('utf8'))
+                    listOfSentiTweets.append(tweet)
+                ticker['tweetsByDate'] = listOfSentiTweets
+                mongodao.save_senti_ticker_by_keyword(ticker.get('keyword'), ticker)
 
 if __name__ == '__main__':
     sentClassifier = SentimentClassifier()
