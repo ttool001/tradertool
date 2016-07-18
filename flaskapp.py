@@ -44,7 +44,7 @@ def test():
 #@cache.cached(300, key_prefix='gettwit')
 def gettwit(keyword):
     import twittertest as tw
-    result = tw.getTweets(keyword=keyword, mongodao=dao)
+    result = tw.scrapTweets(keyword=keyword, mongodao=dao)
 
     return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
                     , mimetype='application/json')
@@ -174,7 +174,7 @@ def backend_scrapping(arg):
         print('finish getting [%s]' % keyword, file=sys.stdout)
         count += pages
         if count > 175 and count % 175 == 0:
-            print('processed %s tickers, sleep for 16 minutes' % count/5)
+            print('processed %s tickers, sleep for 16 minutes' % count/10)
             sleep(60*16)
     print('all done')
     
