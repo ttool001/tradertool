@@ -41,7 +41,6 @@ def test():
     return "<strong>It's Alive!</strong>"
 
 @app.route("/gettwit/<keyword>")
-#@cache.cached(300, key_prefix='gettwit')
 def gettwit(keyword):
     import twittertest as tw
     result = tw.scrapTweets(keyword=keyword, mongodao=dao)
@@ -50,6 +49,7 @@ def gettwit(keyword):
                     , mimetype='application/json')
 
 @app.route("/getlists/")
+@cache.cached(300, key_prefix='getlists')
 def getlists():
     '''
     pos_list = []
@@ -171,12 +171,20 @@ def backend_scrapping(arg):
     tickers = 0
     for keyword in arg:
         print('start getting [%s]' % keyword, file=sys.stdout)
-        pages = tw.scrapTweets(keyword=keyword, mongodao=dao)
+        try:
+            pages = tw.scrapTweets(keyword=keyword, mongodao=dao)
+        except:
+            print('processed %s tickers, sleep for 15 minutes' % tickers)
+            count = 0
+            pages = 0
+            sleep(61*15)
         print('finish getting [%s]' % keyword, file=sys.stdout)
         count += pages
         tickers += 1
         if count >= 170 and count % 170 == 0:
             print('processed %s tickers, sleep for 15 minutes' % tickers)
+            count = 0
+            pages = 0
             sleep(61*15)
     print('all done')
     
