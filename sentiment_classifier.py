@@ -102,6 +102,7 @@ class SentimentClassifier():
                     listOfSentiTweets.append(tweet)
                 ticker['tweetsByDate'] = listOfSentiTweets
                 mongodao.save_senti_ticker_by_keyword(ticker.get('keyword'), ticker)
+                print('finish saving senti for %s' % ticker.get('keyword'))
 
 if __name__ == '__main__':
     sentClassifier = SentimentClassifier()

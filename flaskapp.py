@@ -173,8 +173,8 @@ def backend_scrapping(arg):
         pages = tw.scrapTweets(keyword=keyword, mongodao=dao)
         print('finish getting [%s]' % keyword, file=sys.stdout)
         count += pages
-        if count % 175 == 0:
-            print('sleep for 16 minutes')
+        if count > 175 and count % 175 == 0:
+            print('processed %s tickers, sleep for 16 minutes' % count/5)
             sleep(60*16)
     print('all done')
     
