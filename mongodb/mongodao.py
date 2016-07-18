@@ -128,7 +128,8 @@ class Mongodao:
                     else:
                         pos_count += 1
                     total_count += 1
-            listTickerToSenti.append({'ticker':ticker.get('keyword'), 'pos':float(pos_count/total_count), 'neg':neg_count/total_count})
+            if total_count >= 200:
+                listTickerToSenti.append({'ticker':ticker.get('keyword'), 'pos':float(pos_count/total_count), 'neg':neg_count/total_count})
         
         negSortList = sorted(listTickerToSenti, key=lambda item: (item.get('pos')))
         n = lambda item: {'ticker':item.get('ticker'), 'senti':round(item.get('neg', 0) * -1, 2)}
