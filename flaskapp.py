@@ -168,13 +168,15 @@ def backend_scrapping(arg):
     from time import sleep
     import twittertest as tw
     count = 0
+    tickers = 0
     for keyword in arg:
         print('start getting [%s]' % keyword, file=sys.stdout)
         pages = tw.scrapTweets(keyword=keyword, mongodao=dao)
         print('finish getting [%s]' % keyword, file=sys.stdout)
         count += pages
+        tickers += 1
         if count >= 170 and count % 170 == 0:
-            print('processed %s tickers, sleep for 15 minutes' % count/10)
+            print('processed %s tickers, sleep for 15 minutes' % tickers)
             sleep(61*15)
     print('all done')
     
