@@ -61,13 +61,13 @@ class SentimentClassifier():
 
         with open(RT_POLARITY_POS_FILE, 'r') as posSentences:
             for line in posSentences:
-                line = self.process_tweet(line)
+                line = self.process_tweet(line.upper())
                 train_data.append(line)
                 train_labels.append(classes[0])
 
         with open(RT_POLARITY_NEG_FILE, 'r') as negSentences:
             for line in negSentences:
-                line = self.process_tweet(line)
+                line = self.process_tweet(line.upper())
                 train_data.append(line)
                 train_labels.append(classes[1])
         train_vectors = self.vectorizer.fit_transform(train_data)
@@ -94,7 +94,7 @@ class SentimentClassifier():
             if listOfTweets:
                 for tweet in listOfTweets:
                     sen = f(tweet)
-                    senti_score = self.classify_tweet(sen)
+                    senti_score = self.classify_tweet(sen.upper())
                     if senti_score:
                         senti_score = senti_score[0]
                     tweet['senti'] = senti_score
