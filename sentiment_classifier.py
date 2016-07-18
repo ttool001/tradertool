@@ -42,18 +42,15 @@ class SentimentClassifier():
         return sentence
 
 
-    def classify_tweet(self,tweets):
-        tweet_list = []
-        for tweet in tweets:
-            feature_words = []
-            tweet = self.process_sentence(tweet)
-            tweet = re.findall(r"[A-Za-z]+", tweet.rstrip())
-            for word in tweet:
-                if word not in self.stopset:
-                    feature_words.append(word.lower())
-            sentence = ' '.join(feature_words)
-            tweet_list.append(sentence)
-        sentiment = self.classifier.predict(self.vectorizer.transform(tweet_list))
+    def classify_tweet(self,tweet):
+        feature_words = []
+        tweet = self.process_sentence(tweet)
+        tweet = re.findall(r"[A-Za-z]+", tweet.rstrip())
+        for word in tweet:
+            if word not in self.stopset:
+                feature_words.append(word.lower())
+        sentence = ' '.join(feature_words)
+        sentiment = self.classifier.predict(self.vectorizer.transform([sentence]))
         return sentiment
 
     def evaluate_classifier(self):
@@ -93,4 +90,4 @@ class SentimentClassifier():
 
 if __name__ == '__main__':
     sentClassifier = SentimentClassifier()
-    print(sentClassifier.classify_tweet(["Williams Cos. downgraded by  Investment Research to hold"]))
+    print(sentClassifier.classify_tweet("Williams Cos. downgraded by  Investment Research to hold"))
