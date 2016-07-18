@@ -123,6 +123,18 @@ def get_sample_tweets(keyword):
     return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
                 , mimetype='application/json')
 
+@app.route("/derek/")
+def derek():
+    
+    import sentiment_classifier as sc
+    sentClassifier = sc.SentimentClassifier()
+    senti = sentClassifier.classify_tweet("Williams Cos. downgraded by  Investment Research to hold")
+    if len(senti) > 0:
+        senti = senti[0]
+    print(senti)
+    
+    return Response(json.dumps(senti, ensure_ascii=False).encode('utf8')
+                    , mimetype='application/json')
 
 @app.route("/scrap/")
 def scrap():

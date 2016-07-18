@@ -1,12 +1,8 @@
 import os
 import time
 import re
-
-from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import  BernoulliNB
 from sklearn.metrics import classification_report, accuracy_score
 
 
@@ -14,7 +10,8 @@ from sklearn.metrics import classification_report, accuracy_score
 class SentimentClassifier():
 
     def __init__(self):
-        self.stopset = list(stopwords.words('english'))
+        STOP_WORD_FILE = os.path.join('polarityData', 'english.txt')
+        self.stopset = open(STOP_WORD_FILE,'r').read().split()
         self.stopset += ['t', 'AT_USER', 'STOCK', 'URL', 'RT']
         self.stopset.remove('above')
         self.stopset.remove('below')
@@ -42,18 +39,15 @@ class SentimentClassifier():
         return sentence
 
 
-    def classify_tweet(self,tweets):
-        tweet_list = []
-        for tweet in tweets:
-            feature_words = []
-            tweet = self.process_sentence(tweet)
-            tweet = re.findall(r"[A-Za-z]+", tweet.rstrip())
-            for word in tweet:
-                if word not in self.stopset:
-                    feature_words.append(word.lower())
-            sentence = ' '.join(feature_words)
-            tweet_list.append(sentence)
-        sentiment = self.classifier.predict(self.vectorizer.transform(tweet_list))
+    def classify_tweet(self,tweet):
+        feature_words = []
+        tweet = self.process_sentence(tweet)
+        tweet = re.findall(r"[A-Za-z]+", tweet.rstrip())
+        for word in tweet:
+            if word not in self.stopset:
+                feature_words.append(word.lower())
+        sentence = ' '.join(feature_words)
+        sentiment = self.classifier.predict(self.vectorizer.transform([sentence]))
         return sentiment
 
     def evaluate_classifier(self):
@@ -93,4 +87,4 @@ class SentimentClassifier():
 
 if __name__ == '__main__':
     sentClassifier = SentimentClassifier()
-    print(sentClassifier.classify_tweet(["Williams Cos. downgraded by  Investment Research to hold"]))
+    print(sentClassifier.classify_tweet("Williams Cos. downgraded by  Investment Research to hold"))
