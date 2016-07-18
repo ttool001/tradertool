@@ -51,7 +51,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="overflow-y:auto; word-wrap:normal">
                     <!-- <div class="tabbable"> -->
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_graphs">
@@ -73,12 +73,16 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="tab_tweets">
+                          <div class='row' id="tweet_column">
                             <div id="positive_tweets" class="col-sm-6">
-                                <p>Positive Tweet space</p>
+                                <p style="font-weight:bold; color:green">Positive Tweet space</p>
                             </div>
                             <div id="negative-tweets" class="col-sm-offset-6">
-                                <p>Negative Tweet Space</p>
+                                <p style="font-weight:bold; color:red">Negative Tweet Space</p>
                             </div>
+                          </div>
+                          <div id="twitters_list"></div>
+                          </div>
                         </div>
                     </div><!-- </div> -->
                 </div>
