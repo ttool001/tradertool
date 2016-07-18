@@ -49,7 +49,7 @@ def scrapTweets(keyword, mongodao,lang='en', count=100, result_type='mixed', pag
                 return 0
             
     max_id = None
-    pages = 5
+    pages = 10
     for page in range(0, pages):
         max_id, tweetText = getTweets(keyword, mongodao, max_id=max_id)
         list.extend(tweetText)
