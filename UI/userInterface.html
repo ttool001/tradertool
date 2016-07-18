@@ -130,10 +130,10 @@
 
                         var table_creation_start_pos=div_start+table_start+table_header_pos+table_body_start+div_end;
                         var table_creation_start_neg=div_start+table_start+table_header_neg+table_body_start+div_end;
-                        for(var i=0; i<10; i=i+2){
+                        for(var i=0; i<20; i=i+2){
                             table_creation_start_pos += table_row_start+cell_start+start_link_to_modal+pos_list[i]+end_link_to_modal+cell_end+cell_start+progress_bar_start_pos+pos_list[i+1]*100+progress_bar_mid+pos_list[i+1]*100+'%'+progress_bar_end+cell_end+table_row_end;
                         }
-                        for(var i=0; i<10; i=i+2){
+                        for(var i=0; i<20; i=i+2){
                             // alert(Math.abs(neg_list[i+1]*100));
                             table_creation_start_neg += table_row_start+cell_start+start_link_to_modal+neg_list[i]+end_link_to_modal+cell_end+cell_start+progress_bar_start_neg+Math.abs(neg_list[i+1]*100)+progress_bar_mid+Math.abs(neg_list[i+1]*100)+'%'+progress_bar_end+cell_end+table_row_end;
                         }
