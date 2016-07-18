@@ -44,7 +44,7 @@ def scrapTweets(keyword, mongodao,lang='en', count=100, result_type='mixed', pag
         last_ts = twit['lastUpdate']
         if last_ts:
             now = datetime.datetime.now()
-            if (now - last_ts) < datetime.timedelta(minutes = 15):
+            if (now - last_ts) < datetime.timedelta(minutes = 45):
                 del twit['lastUpdate']
                 return 0
             
@@ -83,7 +83,6 @@ def getTweets(keyword, mongodao, lang='en', count=100, result_type='mixed', page
     print('rest call to [%s]' % encoded_params)
     bernie_sander_tweets = requests.get(url=BASE_QUERY, params=encoded_params,  auth=oauth)
     new_json = bernie_sander_tweets.json()["statuses"]
-    print(json.dumps(new_json, ensure_ascii=False).encode('utf8'))
     twitTexts = []
     for i in new_json:
         last_id = i.get('id', 0)
