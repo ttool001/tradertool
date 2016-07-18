@@ -153,6 +153,7 @@ def scrap():
     for key, val in dict_tickers_by_sector.items():
         result.extend(val)
     
+    result = result.reverse()
     from threading import Thread
     print('start threading...', file=sys.stdout)
     thread = Thread(target = backend_scrapping, kwargs = {'arg':result})
