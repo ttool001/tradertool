@@ -14,7 +14,7 @@ class Mongodao:
     def __init__(self):
         from pymongo import MongoClient
         if os.environ.get('OPENSHIFT_GEAR_NAME', None):
-	    mongo_url = os.environ.get('OPENSHIFT_MONGODB_DB_URL' , 'mongodb://admin:XrCcvpvVDXJ2@593f3ea889f5cf9f190000c7-dushen1.rhcloud.com:46086/')
+            mongo_url = os.environ.get('OPENSHIFT_MONGODB_DB_URL' , 'mongodb://admin:XrCcvpvVDXJ2@593f3ea889f5cf9f190000c7-dushen1.rhcloud.com:46086/')
             client = MongoClient(mongo_url)
         else:
             client = MongoClient('mongodb://localhost:27017/')
