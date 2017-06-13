@@ -10,7 +10,7 @@ $(document).ready(function(){
 		var endp = '</p>' 
 
 
-		var endpoint = 'http://python-jphackathon.rhcloud.com/get_sample_tweets/';
+		var endpoint = 'http://mldemo-dushen1.rhcloud.com/get_sample_tweets/';
 		var stock_name = $('#selected_ticker').text();
 		var fullendpoint = endpoint + stock_name;
 		console.log(fullendpoint);

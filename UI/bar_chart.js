@@ -66,7 +66,7 @@ $(document).ready(function() {
       }
 
 $('#search_button').click(function(){
-      var endpoint = 'http://python-jphackathon.rhcloud.com/getticker/';
+      var endpoint = 'http://mldemo-dushen1.rhcloud.com/getticker/';
       var nameOfTicker = $("#search").val();
       var fullendpoint = endpoint + nameOfTicker;
 

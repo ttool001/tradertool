@@ -3,8 +3,8 @@
 repo for hackathon project
 
 links: 
-http://python-jphackathon.rhcloud.com/getlists/
-http://python-jphackathon.rhcloud.com/getticker/AAPL
+http://mldemo-dushen1.rhcloud.com/getlists/
+http://mldemo-dushen1.rhcloud.com/getticker/AAPL
 
 hosting site:
-http://python-jphackathon.rhcloud.com/
+http://mldemo-dushen1.rhcloud.com/
