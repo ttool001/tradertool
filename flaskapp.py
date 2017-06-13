@@ -2,7 +2,7 @@ import json
 from flask import Flask, request, flash, url_for, redirect, Response, \
      render_template, abort, send_from_directory
 from mongodb import mongodao
-from flask_cache import Cache
+#from flask_cache import Cache
 import sys
 from flask_cors import CORS, cross_origin
 
@@ -22,7 +22,7 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Check Configuring Flask-Cache section for more details
-cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+#cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 app.config.from_pyfile('flaskapp.cfg')
 
@@ -49,7 +49,7 @@ def gettwit(keyword):
                     , mimetype='application/json')
 
 @app.route("/getlists/")
-@cache.cached(300, key_prefix='getlists')
+#@cache.cached(300, key_prefix='getlists')
 def getlists():
     '''
     pos_list = []
