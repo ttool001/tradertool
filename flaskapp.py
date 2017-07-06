@@ -7,6 +7,7 @@ import sys
 from flask_cors import CORS, cross_origin
 from urllib import request, parse, error
 import datetime
+import time
 '''
 import logging
 from logging.handlers import RequiredHandler
@@ -27,7 +28,7 @@ cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 app.config.from_pyfile('flaskapp.cfg')
 
-json.JSONEncoder.default = lambda self,obj: (int(mktime(obj.timetuple())) if isinstance(obj, datetime.datetime) else None)
+json.JSONEncoder.default = lambda self,obj: (int(time.mktime(obj.timetuple())) if isinstance(obj, datetime.datetime) else None)
 
 @app.route('/')
 def index():
