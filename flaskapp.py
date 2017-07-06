@@ -219,9 +219,9 @@ def hist_quote(symbol):
             offset = 0
         else:
             offset = float(offset)
-            open_,high,low,close = [float(x) for x in [open_,high,low,close]]
-            dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset))
-            result.append([dt,open_,high,low,close,volume])
+        open_,high,low,close = [float(x) for x in [open_,high,low,close]]
+        dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset))
+        result.append([dt,open_,high,low,close,volume])
             return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
                 , mimetype='application/json')
 	  
