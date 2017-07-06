@@ -202,15 +202,13 @@ def hist_quote(symbol):
     url_string = "http://www.google.com/finance/getprices?q={0}".format(symbol)
     url_string += "&i={0}&p={1}Y&f=d,o,h,l,c,v".format(interval_seconds,num_years)
 
-    print("url:[%s]", url_string)
     hdr = {'User-Agent': 'Mozilla/5.0'}
     req = request.Request(url_string, headers=hdr)
     csv = request.urlopen(req).readlines()    
     
     for bar in range(7,len(csv)):
         try:
-            line = csv[bar].decode()
-            print('%s: [%s]' , (bar, line))
+            line = csv[bar].decode().rstrip()
             if line.count(',')!=5: continue
         except Exception:
             print(line)
@@ -224,8 +222,9 @@ def hist_quote(symbol):
         open_,high,low,close = [float(x) for x in [open_,high,low,close]]
         dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset))
         result.append([dt,open_,high,low,close,volume])
-        return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
-                , mimetype='application/json')
+
+    return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
+            , mimetype='application/json')
 	  
 if __name__ == '__main__':
     app.run()
