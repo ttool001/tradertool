@@ -207,11 +207,12 @@ def hist_quote(symbol):
     
     for bar in range(7,len(csv)):
         try:
-            if csv[bar].decode().count(',')!=5: continue
+            line = csv[bar].decode()
+            if line.count(',')!=5: continue
         except Exception:
-            print(csv[bar].decode)
+            print(line)
             continue
-        offset,close,high,low,open_,volume = csv[bar].split(',')
+        offset,close,high,low,open_,volume = line.split(',')
         if offset[0]=='a':
             day = float(offset[1:])
             offset = 0
