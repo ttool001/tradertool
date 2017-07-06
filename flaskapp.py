@@ -28,7 +28,8 @@ cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 app.config.from_pyfile('flaskapp.cfg')
 
-json.JSONEncoder.default = lambda self,obj: (int(time.mktime(obj.timetuple())) if isinstance(obj, datetime.datetime) else None)
+#convert datetimg to epoach time
+json.JSONEncoder.default = lambda self,obj: (int(time.mktime(obj.timetuple()) * 1000) if isinstance(obj, datetime.datetime) else None)
 
 @app.route('/')
 def index():
@@ -221,7 +222,7 @@ def hist_quote(symbol):
             offset = float(offset)
         volume = int(volume) #convert to integer
         open_,high,low,close = [float(x) for x in [open_,high,low,close]]
-        dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset)) * 1000 #in milliseconds
+        dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset))
         result.append([dt,open_,high,low,close,volume])
 
     return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
