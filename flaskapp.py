@@ -205,7 +205,7 @@ def hist_quote(symbol):
     req = request.Request(url_string, headers=hdr)
     csv = request.urlopen(req).readlines()    
     
-    for bar in xrange(7,len(csv)):
+    for bar in range(7,len(csv)):
         if csv[bar].count(',')!=5: continue
         offset,close,high,low,open_,volume = csv[bar].split(',')
         if offset[0]=='a':
