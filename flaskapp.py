@@ -5,7 +5,7 @@ from mongodb import mongodao
 from flask_cache import Cache
 import sys
 from flask_cors import CORS, cross_origin
-import urllib
+from urllib import request, parse, error
 
 '''
 import logging
@@ -200,7 +200,11 @@ def hist_quote(symbol):
     symbol = symbol.upper()
     url_string = "http://www.google.com/finance/getprices?q={0}".format(symbol)
     url_string += "&i={0}&p={1}Y&f=d,o,h,l,c,v".format(interval_seconds,num_years)
-    csv = urllib.urlopen(url_string).readlines()
+   
+    hdr = {'User-Agent': 'Mozilla/5.0'}
+    req = request.Request(url_string, headers=hdr)
+    csv = request.urlopen(req).readlines()    
+    
     for bar in xrange(7,len(csv)):
         if csv[bar].count(',')!=5: continue
         offset,close,high,low,open_,volume = csv[bar].split(',')
