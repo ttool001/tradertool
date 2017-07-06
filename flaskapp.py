@@ -195,7 +195,7 @@ def backend_scrapping(arg):
 def hist_quote(symbol):
 
     interval_seconds = 60 * 60 * 24
-    num_years = 1
+    num_years = 40
     
     result = []
     symbol = symbol.upper()
@@ -219,8 +219,9 @@ def hist_quote(symbol):
             offset = 0
         else:
             offset = float(offset)
+        volume = int(volume) #convert to integer
         open_,high,low,close = [float(x) for x in [open_,high,low,close]]
-        dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset))
+        dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset)) * 1000 #in milliseconds
         result.append([dt,open_,high,low,close,volume])
 
     return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
