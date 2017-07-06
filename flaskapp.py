@@ -222,7 +222,7 @@ def hist_quote(symbol):
         open_,high,low,close = [float(x) for x in [open_,high,low,close]]
         dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset))
         result.append([dt,open_,high,low,close,volume])
-            return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
+        return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
                 , mimetype='application/json')
 	  
 if __name__ == '__main__':
