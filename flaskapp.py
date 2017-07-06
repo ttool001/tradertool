@@ -210,6 +210,7 @@ def hist_quote(symbol):
         try:
             line = csv[bar].decode()
             if line.count(',')!=5: continue
+            print('%s: [%s]' , bar, line)
         except Exception:
             print(line)
             continue
