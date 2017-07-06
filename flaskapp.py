@@ -201,7 +201,8 @@ def hist_quote(symbol):
     symbol = symbol.upper()
     url_string = "http://www.google.com/finance/getprices?q={0}".format(symbol)
     url_string += "&i={0}&p={1}Y&f=d,o,h,l,c,v".format(interval_seconds,num_years)
-   
+
+    print("url:[%s]", url_string)
     hdr = {'User-Agent': 'Mozilla/5.0'}
     req = request.Request(url_string, headers=hdr)
     csv = request.urlopen(req).readlines()    
@@ -209,8 +210,8 @@ def hist_quote(symbol):
     for bar in range(7,len(csv)):
         try:
             line = csv[bar].decode()
+            print('%s: [%s]' , (bar, line))
             if line.count(',')!=5: continue
-            print('%s: [%s]' , bar, line)
         except Exception:
             print(line)
             continue
