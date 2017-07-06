@@ -192,25 +192,25 @@ def backend_scrapping(arg):
 @app.route("/hist_quote/<symbol>")
 def hist_quote(symbol):
 
-	interval_seconds = 60 * 60 * 24
-	num_years = 1
-	
-	result = []
-	symbol = symbol.upper()
-	url_string = "http://www.google.com/finance/getprices?q={0}".format(symbol)
-	url_string += "&i={0}&p={1}Y&f=d,o,h,l,c,v".format(interval_seconds,num_years)
-	csv = urllib.urlopen(url_string).readlines()
-	for bar in xrange(7,len(csv)):
-		if csv[bar].count(',')!=5: continue
-		offset,close,high,low,open_,volume = csv[bar].split(',')
-		if offset[0]=='a':
-			day = float(offset[1:])
-			offset = 0
-		else:
-			offset = float(offset)
-			open_,high,low,close = [float(x) for x in [open_,high,low,close]]
-			dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset))
-			result.append([dt,open_,high,	return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
+    interval_seconds = 60 * 60 * 24
+    num_years = 1
+    
+    result = []
+    symbol = symbol.upper()
+    url_string = "http://www.google.com/finance/getprices?q={0}".format(symbol)
+    url_string += "&i={0}&p={1}Y&f=d,o,h,l,c,v".format(interval_seconds,num_years)
+    csv = urllib.urlopen(url_string).readlines()
+    for bar in xrange(7,len(csv)):
+        if csv[bar].count(',')!=5: continue
+        offset,close,high,low,open_,volume = csv[bar].split(',')
+        if offset[0]=='a':
+            day = float(offset[1:])
+            offset = 0
+        else:
+            offset = float(offset)
+            open_,high,low,close = [float(x) for x in [open_,high,low,close]]
+            dt = datetime.datetime.fromtimestamp(day+(interval_seconds*offset))
+            result.append([dt,open_,high,	return Response(json.dumps(result, ensure_ascii=False).encode('utf8')
                 , mimetype='application/json')
 	  
 if __name__ == '__main__':
